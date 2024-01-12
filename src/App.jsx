@@ -8,24 +8,28 @@ function App() {
   const [searchText, setSearchText] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
-  useEffect(() => {
-    console.log("run useEffect");
-    if (searchText) {
-      searchFromServer(searchText);
-    }
-  }, [searchText]);
-
   const searchFromServer = async (text) => {
     try {
       const response = await axios.get(
         `https://www.googleapis.com/books/v1/volumes?q=${text}`
       );
       setSearchResult(response.data.items);
+      console.log(response.data.items);
     } catch (error) {
       console.log(error);
     }
   };
+  //Case_1. with useEffect
+useEffect(() => {
+    if (searchText) {
+      searchFromServer(searchText);
+    }
+  }, [searchText]);
 
+//Case_2. without useEffect
+  // if (searchText) {
+  //   searchFromServer(searchText);
+  // }
   return (
     <div className="App">
       <h1>Find a Book</h1>
